@@ -1,0 +1,7 @@
+node_modules
+dist
+test
+docker-compose.yml
+config
+junit.xml
+!sample-configuration/**/*

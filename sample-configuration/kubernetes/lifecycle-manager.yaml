@@ -1,0 +1,81 @@
+# This list object will create the following Kubernetes entities:
+#   - DockerHub secret with a username and password fields.
+#   - ConfigMap with image lifecycle configurations.
+#   - CronJob object that will run the program every 30 minutes using the aforementioned secret and configmap.
+apiVersion: v1
+kind: List
+items:
+
+# DockerHub access secret.
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: dockerhub-access
+  type: Opaque
+  data:
+    username: dXNlcm5hbWU= # base64 encoded => "username"
+    password: cGFzc3dvcmQ= # base64 encoded => "password"
+
+# Lifecycle configurations.
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: hubcycle-config
+  data:
+    images.json: |
+      [
+        {
+          "name": "username/image-a",
+          "match" : [
+            {
+              "expression": "develop-.*",
+              "keep": 3
+            }, {
+              "expression": "master-.*",
+              "keep": 10
+            }
+          ]
+        }, {
+          "name": "username/image-b",
+          "keep": 1,
+          "match": "develop-.*"
+        }
+      ]
+
+# CronJob and container definitions.
+- apiVersion: batch/v1beta1
+  kind: CronJob
+  metadata:
+    name: hubcycle
+  spec:
+    schedule: "*/30 * * * *"
+    concurrencyPolicy: Forbid
+    jobTemplate:
+      spec:
+        template:
+          spec:
+            containers:
+            - name: hubcycle
+              image: hubcycle:latest
+              env:
+              - name: dockerhub.username
+                valueFrom:
+                  secretKeyRef:
+                    name: dockerhub-access
+                    key: username
+              - name: dockerhub.password
+                valueFrom:
+                  secretKeyRef:
+                    name: dockerhub-access
+                    key: password
+              args: ['--dry-run', '--debug']
+              volumeMounts:
+              - mountPath: /config
+                name: config
+            restartPolicy: OnFailure
+            volumes:
+            - name: config
+              configMap:
+                name: hubcycle-config
+            imagePullSecrets:
+            - name: pull-secret-name

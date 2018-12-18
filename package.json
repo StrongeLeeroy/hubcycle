@@ -1,0 +1,39 @@
+{
+  "name": "hubcycle",
+  "version": "3.2.0",
+  "description": "DockerHub image tag lifecycle manager.",
+  "main": "dist/index.js",
+  "author": {
+    "name": "Gorka Hernandez Estomba",
+    "email": "gorka.hernandez@datagenicgroup.com",
+    "url": "https://www.gorkahernandez.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/StrongeLeeroy/hubcycle"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "build:start": "tsc && node dist/index.js",
+    "release": "standard-version",
+    "test": "jest",
+    "test:ci": "jest --ci --reporters=jest-junit --coverage --coverageDirectory=test/coverage",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@types/node": "^10.12.12",
+    "axios": "^0.18.0",
+    "typescript": "^3.2.1",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.10",
+    "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
+    "standard-version": "^4.4.0",
+    "ts-jest": "^23.10.5"
+  }
+}

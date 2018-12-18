@@ -1,0 +1,18 @@
+[
+    {
+      "name": "username/image-a",
+      "match" : [
+        {
+          "expression": "develop-.*",
+          "keep": 3
+        }, {
+          "expression": "master-.*",
+          "keep": 10
+        }
+      ]
+    }, {
+      "name": "username/image-b",
+      "keep": 1,
+      "match": "develop-.*"
+    }
+  ]

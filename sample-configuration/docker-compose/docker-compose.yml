@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  hubcycle:
+    image: hubcycle:latest
+    volumes:
+      - "./config:/config"
+    environment:
+      - "dockerhub.username=username"
+      - "dockerhub.password=password"
+    command: --dry-run --debug

@@ -1,0 +1,6 @@
+Jenkinsfile
+dist
+test
+config
+node_modules
+!sample-configuration/**/*
