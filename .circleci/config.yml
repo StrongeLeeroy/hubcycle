@@ -41,8 +41,6 @@ jobs:
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push strongeleeroy/$IMAGE_NAME:$TAG
   build_master:
-    branches:
-      only: master
     docker:
       - image: circleci/node:10
     working_directory: ~/repo
