@@ -1,11 +1,25 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![CircleCI](https://circleci.com/gh/StrongeLeeroy/hubcycle/tree/master.svg?style=svg)](https://circleci.com/gh/StrongeLeeroy/hubcycle/tree/master)
 
-## Compatibility
 
-Currently, only **private** DockerHub registries are supported.
+Currently, only **private** DockerHub registries are supported. This application is distributed as a Docker image.
 
-## Configuration -- Authentication
+[Docker Hub](https://hub.docker.com/r/strongeleeroy/hubcycle)  |  [Changelog](https://github.com/StrongeLeeroy/hubcycle/blob/master/CHANGELOG.md)
+
+## Getting Started
+
+The quickest way to get started is opening the [sample-configuration](https://github.com/StrongeLeeroy/hubcycle/tree/master/sample-configuration) directory and running *Hubcycle* via Docker Compose or Kubernetes. You can also pull and run this image standalone:
+
+```shell
+docker pull strongeleeroy/hubcycle
+```
+
+---
+
+## Configuration -- Environment variables
+
+### Authentication
+
 - **dockerhub.username:** DockerHub username.
 - **dockerhub.password:** DockerHub password.
 
@@ -37,7 +51,7 @@ spec:
 
 ---
 
-## Configuration -- Images
+## Configuration -- Lifecycle Rules (JSON configuration)
 
 Image match and purging configuration is read from a single file located under `/config/images.json`, if none is given, tthe application defaults to legacy configuration (via environment variables and documented at the end of this README file).
 
