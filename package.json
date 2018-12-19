@@ -1,6 +1,6 @@
 {
   "name": "hubcycle",
-  "version": "3.2.0",
+  "version": "1.0.0",
   "description": "DockerHub image tag lifecycle manager.",
   "main": "dist/index.js",
   "author": {
@@ -22,6 +22,10 @@
     "test": "jest",
     "test:ci": "jest --ci --reporters=jest-junit --coverage --coverageDirectory=test/coverage",
     "test:watch": "jest --watch"
+  },
+  "jest-junit": {
+    "outputDirectory": "./test/results/jest",
+    "outputName": "./results.xml"
   },
   "dependencies": {
     "@types/node": "^10.12.12",
