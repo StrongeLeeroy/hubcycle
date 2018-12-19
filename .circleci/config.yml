@@ -76,6 +76,13 @@ workflows:
           filters:
             branches:
               only: develop
+      - hold:
+          type: approval
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
       - build_master:
           requires:
             - test
