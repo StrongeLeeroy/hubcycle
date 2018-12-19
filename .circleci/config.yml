@@ -20,9 +20,7 @@ jobs:
       - run:
           name: Run Unit-tests
           command: npm run test:ci
-  build:
-    branches:
-      only: develop
+  build_develop:
     docker:
       - image: circleci/node:10
     working_directory: ~/repo
@@ -42,25 +40,43 @@ jobs:
             docker build -t strongeleeroy/$IMAGE_NAME:$TAG .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push strongeleeroy/$IMAGE_NAME:$TAG
-  # build_master:
-  #   branches:
-  #     only: master
-  #   docker:
-  #     - image: circleci/node:10
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Setup Environment
-  #         command: |
-  #           echo 'export IMAGE_NAME=hubcycle' >> $BASH_ENV
-  #           echo `export VERSION=$(node -p "require('./package.json').version") >> $BASH_ENV
-  #           echo 'export TAG=$VERSION'
-  #     - setup_remote_docker:
-  #         docker_layer_caching: true
-  #     - run:
-  #         name: Build and push Docker image
-  #         command: |
-  #           docker build -t strongeleeroy/$IMAGE_NAME:$TAG .
-  #           echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
-  #           docker push strongeleeroy/$IMAGE_NAME:$TAG
+  build_master:
+    branches:
+      only: master
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Setup Environment
+          command: |
+            echo 'export IMAGE_NAME=hubcycle' >> $BASH_ENV
+            echo `export VERSION=$(node -p "require('./package.json').version") >> $BASH_ENV
+            echo 'export TAG=$VERSION'
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build and push Docker image
+          command: |
+            docker build -t strongeleeroy/$IMAGE_NAME:$TAG .
+            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push strongeleeroy/$IMAGE_NAME:$TAG
+
+workflows:
+  version: 2
+  test-build-and-push:
+    jobs:
+      - test
+      - build_develop:
+          requires:
+            - test
+          filters:
+            branches:
+              only: develop
+      - build_master:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
