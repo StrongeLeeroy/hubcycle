@@ -26,6 +26,8 @@ jobs:
   build_develop:
     docker:
       - image: circleci/node:10
+    environment:
+      SHORT_GIT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
     working_directory: ~/repo
     steps:
       - checkout
@@ -33,7 +35,7 @@ jobs:
           name: Setup Environment
           command: |
             echo 'export IMAGE_NAME=hubcycle' >> $BASH_ENV
-            echo 'export TAG=develop-$CIRCLE_SHA1' >> $BASH_ENV
+            echo 'export TAG=develop-$SHORT_GIT_HASH' >> $BASH_ENV
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
@@ -83,6 +85,7 @@ workflows:
               only: master
       - build_master:
           requires:
+            - hold
             - test
           filters:
             branches:
