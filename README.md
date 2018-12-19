@@ -1,9 +1,5 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
-[![pipeline status](https://gitlab.com/StrongeLeeroy/hubcycle/badges/master/pipeline.svg)](https://gitlab.com/StrongeLeeroy/hubcycle/commits/master)
-
-[![coverage report](https://gitlab.com/StrongeLeeroy/hubcycle/badges/master/coverage.svg)](https://gitlab.com/StrongeLeeroy/hubcycle/commits/master)
-
 ## Compatibility
 
 Currently, only **private** DockerHub registries are supported.
