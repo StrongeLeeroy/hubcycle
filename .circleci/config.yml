@@ -54,6 +54,7 @@ jobs:
           command: |
             echo 'export IMAGE_NAME=hubcycle' >> $BASH_ENV
             echo "export VERSION=$(node -p 'require("./package.json").version')" >> $BASH_ENV
+            echo "$VERSION"
             echo "export TAG=$VERSION"
       - setup_remote_docker:
           docker_layer_caching: true
