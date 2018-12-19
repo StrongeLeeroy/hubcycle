@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Run Unit-tests
           command: npm run test:ci
-  build_develop:
+  build:
     branches:
       only: develop
     docker:
@@ -64,9 +64,3 @@ jobs:
   #           docker build -t strongeleeroy/$IMAGE_NAME:$TAG .
   #           echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
   #           docker push strongeleeroy/$IMAGE_NAME:$TAG
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - test
-      - build_develop
