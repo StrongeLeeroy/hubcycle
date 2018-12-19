@@ -23,6 +23,10 @@
     "test:ci": "jest --ci --reporters=jest-junit --coverage --coverageDirectory=test/coverage",
     "test:watch": "jest --watch"
   },
+  "jest-junit": {
+    "outputDirectory": "./test",
+    "outputName": "./junit.xml"
+  },
   "dependencies": {
     "@types/node": "^10.12.12",
     "axios": "^0.18.0",

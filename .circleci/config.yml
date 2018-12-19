@@ -20,6 +20,9 @@ jobs:
       - run:
           name: Run Unit-tests
           command: npm run test:ci
+      - store_test_results:
+          path: test
+
   build_develop:
     docker:
       - image: circleci/node:10
@@ -40,6 +43,7 @@ jobs:
             docker build -t strongeleeroy/$IMAGE_NAME:$TAG .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push strongeleeroy/$IMAGE_NAME:$TAG
+  
   build_master:
     docker:
       - image: circleci/node:10
