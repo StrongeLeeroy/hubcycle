@@ -24,8 +24,8 @@
     "test:watch": "jest --watch"
   },
   "jest-junit": {
-    "outputDirectory": "./test",
-    "outputName": "./junit.xml"
+    "outputDirectory": "./test/results/jest",
+    "outputName": "./results.xml"
   },
   "dependencies": {
     "@types/node": "^10.12.12",
