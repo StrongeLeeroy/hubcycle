@@ -32,7 +32,7 @@ jobs:
           name: Setup Environment
           command: |
             echo 'export IMAGE_NAME=hubcycle' >> $BASH_ENV
-            echo `export VERSION=$(node -p "require('./package.json').version") >> $BASH_ENV
+            echo `export VERSION=$(node -p "require('./package.json').version")` >> $BASH_ENV
             echo 'export TAG=develop-$CIRCLE_SHA1' >> $BASH_ENV
       - setup_remote_docker:
           docker_layer_caching: true
