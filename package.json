@@ -1,6 +1,6 @@
 {
   "name": "hubcycle",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "DockerHub image tag lifecycle manager.",
   "main": "dist/index.js",
   "author": {
@@ -28,8 +28,10 @@
     "outputName": "./results.xml"
   },
   "dependencies": {
+    "@types/js-yaml": "^3.11.2",
     "@types/node": "^10.12.12",
     "axios": "^0.18.0",
+    "js-yaml": "^3.12.0",
     "typescript": "^3.2.1",
     "winston": "^3.1.0"
   },

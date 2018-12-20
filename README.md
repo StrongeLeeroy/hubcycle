@@ -31,6 +31,7 @@ The following flags can be passed as part of the docker compose`command` or Kube
 
 - **--debug, -d:** Enable debug level logging.
 - **--dry-run:** Enable dry run mode (no tags will be deleted).
+- **--yaml:** Use YAML configuration instead of JSON.
 
 *Docker compose example:*
 ```yaml
@@ -51,6 +52,7 @@ spec:
 
 ---
 
+
 ## Configuration -- Lifecycle Rules (JSON configuration)
 
 Image match and purging configuration is read from a single file located under `/config/images.json`, if none is given, tthe application defaults to legacy configuration (via environment variables and documented at the end of this README file).
@@ -63,28 +65,30 @@ The configuration file `images.json` must contain an array of images with their 
 This configuration handles two images, a single tag matcher for `image-a`, and two tag matchers for `image-b`.
 
 ```json
-[
-  {
-    "name": "user/image-a",
-    "match": [
-      {
-        "expression": "develop-.*",
-        "keep": 3
-      }
-    ]
-  }, {
-    "name": "user/image-b",
-    "match": [
-      {
-        "expression": "develop-.*",
-        "keep": 3
-      }, {
-        "expression": "master-.*",
-        "keep": 10
-      }
-    ]
-  }
-]
+{
+  "images": [
+    {
+      "name": "user/image-a",
+      "match": [
+        {
+          "expression": "develop-.*",
+          "keep": 3
+        }
+      ]
+    }, {
+      "name": "user/image-b",
+      "match": [
+        {
+          "expression": "develop-.*",
+          "keep": 3
+        }, {
+          "expression": "master-.*",
+          "keep": 10
+        }
+      ]
+    }
+  ]
+}
 ```
 
 ### Example B: Setting defaults
@@ -92,44 +96,103 @@ We can set the default value of `keep` by setting a `keep` key on the image obje
 
 In this example, `image-a` will use a `keep` value of 5 in the first matcher, `image-b` will use a `keep` value of 3 for the first matcher and default to 10 for the second.
 
-```JSON
-[
-  {
-    "name": "user/image-a",
-    "match": [
-      {
-        "expression": "develop-.*"
-      }
-    ]
-  }, {
-    "name": "user/image-b",
-    "keep": 10,
-    "match": [
-      {
-        "expression": "develop-.*",
-        "keep": 3
-      }, {
-        "expression": "master-.*"
-      }
-    ]
-  }
-]
+```json
+{
+  "images": [
+    {
+      "name": "user/image-a",
+      "match": [
+        {
+          "expression": "develop-.*"
+        }
+      ]
+    }, {
+      "name": "user/image-b",
+      "keep": 10,
+      "match": [
+        {
+          "expression": "develop-.*",
+          "keep": 3
+        }, {
+          "expression": "master-.*"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 ### Example C: Shortcut syntax
 We can use a slightly more compact syntax when we only need to handle a single matcher per image by using a string instead of a matcher array. Defaults behave in the same manner, `image-a` below will use a `keep` value of 5 (default) while `image-b` will use 10 (user set).
 
-```JSON
-[
-  {
-    "name": "user/image-a",
-    "match": "develop-.*"
-  }, {
-    "name": "user/image-b",
-    "keep": 10,
-    "match": "master-.*"
-  }
-]
+```json
+{
+  "images": [
+    {
+      "name": "user/image-a",
+      "match": "develop-.*"
+    }, {
+      "name": "user/image-b",
+      "keep": 10,
+      "match": "master-.*"
+    }
+  ]
+}
+```
+
+## Configuration -- Lifecycle Rules (YAML)
+
+**YAML configuration** is the preferred alternative to JSON (which will eventually be deprecated). Image match and purging configuration can be read from a single file located under `/config/images.yaml`, if none is given, tthe application defaults to legacy configuration (via environment variables and documented at the end of this README file).
+
+This file can be shared to the container via a volume or configuration map.
+
+Using YAML configuration requires that the `--yaml` flag is passed as an argument to the Node application or container.
+
+### Example A: Basic configuration
+This configuration handles two images, a single tag matcher for `image-a`, and two tag matchers for `image-b`.
+
+```yaml
+images:
+  - name: user/image-a
+    match:
+    - expression: develop-.*
+      keep: 3
+  - name: user/image-b
+    match:
+    - expression: develop-.*
+      keep: 3
+    - expression: master-.*
+      keep: 10
+```
+
+### Example B: Setting defaults
+We can set the default value of `keep` by setting a `keep` key on the image object instead of a matcher. If no `keep` value is given to a matcher or image, the system will default to 5.
+
+In this example, `image-a` will use a `keep` value of 5 in the first matcher, `image-b` will use a `keep` value of 3 for the first matcher and default to 10 for the second.
+
+```yaml
+images:
+  - name: user/image-a
+    match:
+    - expression: develop-.*
+  - name: user/image-b
+    keep: 10
+    match:
+    - expression: develop-.*
+      keep: 3
+    - expression: master-.*
+```
+
+### Example C: Shortcut syntax
+We can use a slightly more compact syntax when we only need to handle a single matcher per image by using a string instead of a matcher array. Defaults behave in the same manner, `image-a` below will use a `keep` value of 5 (default) while `image-b` will use 10 (user set).
+
+```yaml
+images:
+  - name: user/image-a
+    match: develop-.*
+  - name: user/image-b
+    keep: 10
+    match: master-.*
 ```
 
 ---
