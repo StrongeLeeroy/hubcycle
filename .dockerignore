@@ -1,5 +1,5 @@
 Jenkinsfile
-dist
+lib
 test
 config
 node_modules

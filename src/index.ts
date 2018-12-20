@@ -1,4 +1,3 @@
-
 import Environment from './helpers/environment';
 import Registry from './helpers/registry';
 import flags from './helpers/flags';
@@ -6,7 +5,7 @@ import logger, { InfoLogger } from './helpers/logging';
 import { getConfiguration } from './helpers/configuration';
 import { purgeImagesFromConfiguration } from './main';
 
-async function main() {
+export async function run() {
 
     InfoLogger.printSeparator();
     if (flags.dryRun) {
@@ -36,5 +35,3 @@ async function main() {
 
     InfoLogger.printSummary(summary);
 }
-
-main();

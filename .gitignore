@@ -1,5 +1,5 @@
 node_modules
-dist
+lib
 test
 docker-compose.yml
 config

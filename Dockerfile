@@ -14,4 +14,4 @@ ENV "NODE_ENV" "production"
 
 WORKDIR /app
 COPY --from=builder /build-app /app
-ENTRYPOINT ["node", "dist/index.js"]
+ENTRYPOINT ["node", "bin/index.js"]
