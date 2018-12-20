@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://gitlab.com/StrongeLeeroy/hubcycle/compare/v1.0.0...v1.1.0) (2018-12-20)
+
+
+### Features
+
+* **configuration:** allow YAML configuration as alternative to JSON ([#8](https://gitlab.com/StrongeLeeroy/hubcycle/issues/8)) ([6abc7b3](https://gitlab.com/StrongeLeeroy/hubcycle/commit/6abc7b3))
+
+
 
 <a name="1.0.0"></a>
 # 1.0.0 (2018-12-19)
