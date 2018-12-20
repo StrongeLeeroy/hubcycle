@@ -12,6 +12,10 @@ export class Flags {
     public get dryRun(): boolean {
         return this.flags.indexOf('--dry-run') >= 0;
     }
+
+    public get yaml(): boolean {
+        return this.flags.indexOf('--yaml') >= 0;
+    }
 }
 
 const flags = new Flags();

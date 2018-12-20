@@ -17,13 +17,17 @@ async function main() {
         logger.log('debug', 'Running in DEBUG mode. Debug messages will appear through the logs.', { label: 'init' });
     }
 
+    if (flags.yaml) {
+        logger.log('debug', 'Using YAML configuration.', { label: 'init' });
+    }
+
     if (!Environment.username || !Environment.password) {
         throw new Error('You must provide a username and password through ENV variables. [username] and [password]')
     }
 
+    const configuration = await getConfiguration(flags.yaml);
     const dockerhub = new Registry();
     const token = await dockerhub.getToken(Environment.username, Environment.password);
-    const configuration = await getConfiguration();
 
     InfoLogger.printConfiguration(configuration);
     InfoLogger.printSeparator();

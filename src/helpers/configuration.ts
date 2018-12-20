@@ -1,4 +1,5 @@
 import { readFile as fsReadFile } from 'fs';
+import yaml from 'js-yaml';
 import { promisify } from 'util';
 import logger from './logging';
 import Environment from './environment';
@@ -26,15 +27,28 @@ export interface VerboseMatcherConfig {
     keep: number;
 }
 
-export async function getConfiguration(): Promise<VerboseImageConfig[]> {
+export async function getConfiguration(useYaml: boolean): Promise<VerboseImageConfig[]> {
     logger.log('debug', 'Reading configuration file from /config/images.json', { label: 'config' });
-    const configFile = await readFile('/config/images.json', 'utf8');
+    const extension = useYaml ? 'yaml' : 'json',
+        configFile = await readFile(`/config/images.${extension}`, 'utf8');
+
     if (configFile) {
         logger.log('debug', 'Configuration file found. Validating...', { label: 'config' });
-        const config = JSON.parse(configFile);
-        if (validateConfig(config)) {
+        const config = useYaml ?
+            yaml.safeLoad(configFile) :
+            JSON.parse(configFile);
+
+        let imageConfig: ImageConfig[];
+        if (config.images) {
+            imageConfig = config.images;
+        } else {
+            logger.log('warn', 'DEPRECATION WARNING: Using deprecated configuration object shape. You must place the list of images under the "images" key in both JSON and YAML configuration files. This is just a warning, but it will become an error in the next major release.');
+            imageConfig = config;
+        }
+
+        if (validateConfig(imageConfig)) {
             logger.log('debug', 'Configuration file is valid.', { label: 'config' });
-            return getVerboseConfiguration(config);
+            return getVerboseConfiguration(imageConfig);
         } else {
             logger.log('error', 'Invalid configuration file. Defaulting to ENV configuration.', { label: 'config' });
             return getEnvConfiguration();
