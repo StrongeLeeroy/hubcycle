@@ -52,7 +52,8 @@ spec:
 
 ---
 
-## Configuration -- Lifecycle Rules (JSON)
+
+## Configuration -- Lifecycle Rules (JSON configuration)
 
 Image match and purging configuration is read from a single file located under `/config/images.json`, if none is given, tthe application defaults to legacy configuration (via environment variables and documented at the end of this README file).
 
